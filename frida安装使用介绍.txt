@@ -1,0 +1,34 @@
+pip install frida    
+pip install frida-tools
+
+1.安装Python环境
+2.用Pip命令安装frida和frida-tools，安装成功后在终端直接敲frida就应该可以输出一些介绍
+3.找一个root过的手机或者root状态的模拟器，最好是真机，能省去很多疑难杂症
+4.手机通过USB线连接电脑，打开开发者模式，有的手机需要打开root开关
+5.adb devices 看看手机连好了吗
+6.adb root 看看手机当前是root状态吗
+确定我们手机的架构，输入以下命令：   adb shell getprop ro.product.cpu.abi
+7.adb shell 后看看出现的输入提示符是$还是#，#的话说明你当前是root权限进入shell，否则执行su，申请一下root权限，注意手机上此时可能有授权弹框需要点击
+8.此时应该处于root 模式下的shell了，输入提示符为#
+9.去下载手机端的frida https://github.com/frida/frida/releases 找到你设备对应的CPU架构版本，一定要匹配对，否则跑不通
+10.frida-server开头文件 frida-server-15.1.1-android-arm64.xz 下载，需要xz解压得到frida-server-15.1.1-android-arm64
+11.adb push D:/frida/frida-server-15.1.1-android-arm64  /data/local/tmp 将frida手机端推送到手机上
+12.adb shell
+13.$ su
+14.# cd /data/local/tmp
+15.# ls 看看在不在这里
+16.# chmod 777 frida-server-15.1.1-android-arm64  给权限
+17.# ./frida-server-15.1.1-android-arm64 直接运行，正常的话，光标会卡在下一行，表明frida在手机端启动成功了，此时这个终端就这样了，不要动了
+18.打开一个新的终端
+19.直接在终端执行firda-ps -U会将此时手机上的所有进程显示出来
+20.找到你需要脱壳的进程的包名，也就是说需要脱壳的App需要提前安装到手机上并启动进入到首页
+21.然后做端口转发，这是必须的，将手机端的端口映射到电脑上
+	adb forward tcp:27042 tcp:27042
+　　	adb forward tcp:27043 tcp:27043
+22.至此firda在手机和电脑双端就部署好了
+23.接下来参考这篇文章，基于frida的三大著名脱壳脚本https://www.freesion.com/article/4214807286/
+24.我用第二个脚本得到的dex jdui无法识别
+25.然后尝试第三个脚本，成功在手机指定位置输出dex，然后将这些dex移到电脑上，然后把这些dex，改名，改成classes.dex,classes2.dex。。。类似这种格式，然后全体打包成一个zip，然后用jdui打开这个zip，自动就能把这些dex转成Java类了
+frida -U -f 包名 -l D:\frida\dexDump.js --no-pause
+
+
