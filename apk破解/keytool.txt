@@ -1,0 +1,60 @@
+keytool文件在jdk的bin里
+
+生成证书：
+keytool -genkeypair -alias "别名" -keyalg "RSA" -validity 365000 -keystore "test.keystore"
+
+eg：
+keytool -genkey -alias zjj -keyalg RSA -keysize 2048 -validity 365000 -keystore zjj.keystore
+
+
+
+1.查看签名信息：
+ keytool -list -v -keystore 文件名
+
+
+
+
+
+
+2.修改密码：keytool -storepasswd -keystore 文件名
+
+
+
+执行后会提示输入证书的当前密码，和新密码以及重复新密码 确认。
+
+eg:
+别名: zjj
+密码：123456
+创建日期: 2022年2月10日
+条目类型: PrivateKeyEntry
+证书链长度: 1
+证书[1]:
+所有者: CN=庄俊建, OU=软件签名, O=软件破解, L=庄俊建, ST=广东, C=中国
+发布者: CN=庄俊建, OU=软件签名, O=软件破解, L=庄俊建, ST=广东, C=中国
+序列号: 599cff8f299f147f
+生效时间: Thu Feb 10 13:38:09 CST 2022, 失效时间: Fri Nov 13 13:38:09 CST 2076
+证书指纹:
+         SHA1: B4:50:47:18:60:97:AE:66:9F:FA:FF:FD:BA:03:1B:4A:4A:19:19:0E
+         SHA256: 76:46:0D:A0:EF:15:50:56:78:1A:B4:5C:FD:BA:B8:A8:7A:2F:D1:4D:1A:26:3C:26:E9:8A:E1:AB:DA:51:53:A9
+签名算法名称: SHA256withRSA
+主体公共密钥算法: 2048 位 RSA 密钥
+版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 4C 6A 44 BF 3B 69 20 D4   FD 0D 32 41 C5 02 E6 58  LjD.;i ...2A...X
+0010: 73 1C DC E9                                        s...
+]
+]
+
+
+
+
+
+
+
+3.修改别名：keytool -changealias -keystore my.keystore 文件名 -alias 别名 -destalias 新别名
+
